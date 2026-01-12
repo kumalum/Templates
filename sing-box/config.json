@@ -1,0 +1,212 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "error"
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns-resolver",
+        "type": "udp",
+        "server": "223.5.5.5"
+      },
+      {
+        "tag": "dns-direct",
+        "type": "tls",
+        "server": "dns.alidns.com",
+        "domain_resolver": "dns_resolver",
+        "detour": "out_direct"
+      },
+      {
+        "tag": "dns-proxy",
+        "type": "https",
+        "server": "dns.cloudflare.com",
+        "domain_resolver": "dns_resolver",
+        "detour": "out_proxy"
+      },
+      {
+        "tag": "dns-block",
+        "type": "hosts",
+        "path": [],
+        "predefined": {}
+      }
+    ],
+    "rules": [
+      {
+        "action": "reject",
+        "server": "dns-block",
+        "rule_set": [
+          "site-ads",
+          "site-adguard"
+        ]
+      },
+      {
+        "action": "route",
+        "server": [
+          "dns-direct"
+        ],
+        "rule_set": "site-direct"
+      }
+    ],
+    "final": "dns-proxy",
+    "strategy": "ipv4_only",
+    "cache_capacity": 0,
+    "reverse_mapping": true
+  },
+  "inbounds": [
+    {
+      "address": [
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "route_address": [
+        "0.0.0.0/1",
+        "128.0.0.0/1",
+        "::/1",
+        "8000::/1"
+      ],
+      "auto_route": true,
+      "auto_redirect": true,
+      "strict_route": true,
+      "type": "tun",
+      "sniff": true,
+      "stack": "mixed"
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "🚀全球代理",
+      "type": "selector",
+      "default": "auto",
+      "outbounds": [
+        "🚀手动选择",
+        "♻️自动选择",
+        "🏡本地代理"
+      ]
+    },
+    {
+      "tag": "🚀手动选择",
+      "type": "selector",
+      "default": "auto",
+      "outbounds": []
+    },
+    {
+      "tag": "📺哔哩哔哩",
+      "type": "selector",
+      "default": "🏡本地代理",
+      "outbounds": [
+        "🏡本地代理"
+      ]
+    },
+    {
+      "tag": "♻️自动选择",
+      "type": "urltest",
+      "outbounds": []
+    },
+    {
+      "tag": "🚫广告拦截",
+      "type": "block"
+    },
+    {
+      "tag": "🏡本地代理",
+      "type": "direct",
+      "udp_fragment": true
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns_proxy",
+    "rules": [
+      {
+        "action": "sniff"
+      },
+      {
+        "protocol": "dns",
+        "action": "hijack-dns"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "🏡本地代理"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "site-direct",
+          "site-cloudflare"
+        ],
+        "outbound": "🏡本地代理",
+        "domain_suffix": [
+          "1210923.xyz",
+          "kumanine.dpdns.org",
+          "kuma9.dpdns.org"
+        ]
+      },
+      {
+        "action": "route",
+        "rule_set": "site-bilibili",
+        "outbound": "📺哔哩哔哩"
+      },
+      {
+        "action": "reject",
+        "rule_set": "site-ads",
+        "outbound": "🚫广告拦截"
+      },
+      {
+        "action": "reject",
+        "rule_set": "site-adguard",
+        "outbound": "🚫广告拦截"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "site-adguard",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/kumalum/rule-set/main/adguard.srs",
+        "download_detour": "🏡本地代理"
+      },
+      {
+        "type": "remote",
+        "tag": "site-cloudflare",
+        "format": "binary",
+        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cloudflare.srs",
+        "download_detour": "🏡本地代理"
+      },
+      {
+        "type": "remote",
+        "tag": "site-ads",
+        "format": "binary",
+        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
+        "download_detour": "🏡本地代理"
+      },
+      {
+        "type": "remote",
+        "tag": "site-direct",
+        "format": "binary",
+        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+        "download_detour": "🏡本地代理"
+      },
+      {
+        "type": "remote",
+        "tag": "site-bilibili",
+        "format": "binary",
+        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-bilibili.srs",
+        "download_detour": "🏡本地代理"
+      }
+    ],
+    "final": "🚀全球代理"
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "zashboard",
+      "external_ui_download_url": "https://github.com/Zephyruso/zashboard/releases/latest/download/dist-no-fonts.zip",
+      "external_ui_download_detour": "🚀全球代理"
+    },
+    "cache_file": {
+      "enabled": true,
+      "store_rdrc": true,
+      "rdrc_timeout": "3d"
+    }
+  }
+}
