@@ -113,7 +113,7 @@
   ],
   "route": {
     "auto_detect_interface": true,
-    "default_domain_resolver": "dns-direct",
+    "default_domain_resolver": "dns-proxy",
     "rules": [
       {
         "action": "sniff"
@@ -129,8 +129,7 @@
       {
         "action": "route",
         "rule_set": [
-          "site-direct",
-          "site-cloudflare"
+          "site-direct"
         ],
         "outbound": "🏡本地代理",
         "domain_suffix": [
