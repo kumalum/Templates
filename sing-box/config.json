@@ -155,29 +155,25 @@
         "type": "remote",
         "tag": "site-cloudflare",
         "format": "binary",
-        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cloudflare.srs",
-        "download_detour": "🏡本地代理"
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cloudflare.srs"
       },
       {
         "type": "remote",
         "tag": "site-ads",
         "format": "binary",
-        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
-        "download_detour": "🏡本地代理"
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs"
       },
       {
         "type": "remote",
         "tag": "site-direct",
         "format": "binary",
-        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
-        "download_detour": "🏡本地代理"
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
       },
       {
         "type": "remote",
         "tag": "site-bilibili",
         "format": "binary",
-        "url": "https://gr.kumanine.dpdns.org/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-bilibili.srs",
-        "download_detour": "🏡本地代理"
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-bilibili.srs"
       }
     ],
     "final": "🚀全球代理"
