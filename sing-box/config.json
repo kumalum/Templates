@@ -14,15 +14,15 @@
         "tag": "dns-direct",
         "type": "tls",
         "server": "dns.alidns.com",
-        "domain_resolver": "dns_resolver",
-        "detour": "out_direct"
+        "domain_resolver": "dns-resolver",
+        "detour": "🏡本地代理"
       },
       {
         "tag": "dns-proxy",
         "type": "https",
         "server": "dns.cloudflare.com",
-        "domain_resolver": "dns_resolver",
-        "detour": "out_proxy"
+        "domain_resolver": "dns-resolver",
+        "detour": "🚀全球代理"
       },
       {
         "tag": "dns-block",
@@ -76,7 +76,7 @@
     {
       "tag": "🚀全球代理",
       "type": "selector",
-      "default": "auto",
+      "default": "♻️自动选择",
       "outbounds": [
         "🚀手动选择",
         "♻️自动选择",
@@ -86,7 +86,6 @@
     {
       "tag": "🚀手动选择",
       "type": "selector",
-      "default": "auto",
       "outbounds": []
     },
     {
@@ -114,7 +113,7 @@
   ],
   "route": {
     "auto_detect_interface": true,
-    "default_domain_resolver": "dns_proxy",
+    "default_domain_resolver": "dns-proxy",
     "rules": [
       {
         "action": "sniff"
