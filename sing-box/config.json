@@ -33,19 +33,18 @@
     ],
     "rules": [
       {
-        "action": "reject",
-        "server": "dns-block",
-        "rule_set": [
-          "site-ads",
-          "site-adguard"
-        ]
-      },
-      {
         "action": "route",
         "server": [
           "dns-direct"
         ],
         "rule_set": "site-direct"
+      },
+      {
+        "action": "reject",
+        "server": "dns-block",
+        "rule_set": [
+          "site-ads"
+        ]
       }
     ],
     "final": "dns-proxy",
@@ -150,21 +149,9 @@
         "action": "reject",
         "rule_set": "site-ads",
         "outbound": "🚫广告拦截"
-      },
-      {
-        "action": "reject",
-        "rule_set": "site-adguard",
-        "outbound": "🚫广告拦截"
       }
     ],
     "rule_set": [
-      {
-        "type": "remote",
-        "tag": "site-adguard",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/kumalum/rule-set/main/adguard.srs",
-        "download_detour": "🏡本地代理"
-      },
       {
         "type": "remote",
         "tag": "site-cloudflare",
