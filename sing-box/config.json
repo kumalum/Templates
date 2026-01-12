@@ -113,7 +113,7 @@
   ],
   "route": {
     "auto_detect_interface": true,
-    "default_domain_resolver": "dns-proxy",
+    "default_domain_resolver": "dns-direct",
     "rules": [
       {
         "action": "sniff"
