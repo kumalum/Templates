@@ -1,6 +1,5 @@
 {
   "log": {
-    "disabled": false,
     "level": "error"
   },
   "dns": {
@@ -23,17 +22,10 @@
         "server": "dns.cloudflare.com",
         "domain_resolver": "dns-resolver",
         "detour": "🚀全球代理"
-      },
-      {
-        "tag": "dns-block",
-        "type": "hosts",
-        "path": [],
-        "predefined": {}
       }
     ],
     "rules": [
       {
-        "action": "route",
         "server": "dns-direct",
         "rule_set": [
           "site-direct"
@@ -41,7 +33,6 @@
       },
       {
         "action": "reject",
-        "server": "dns-block",
         "rule_set": [
           "site-ads"
         ]
@@ -65,7 +56,6 @@
         "8000::/1"
       ],
       "auto_route": true,
-      "auto_redirect": true,
       "strict_route": true,
       "type": "tun",
       "sniff": true,
@@ -89,31 +79,25 @@
       "outbounds": []
     },
     {
+      "tag": "♻️自动选择",
+      "type": "urltest",
+      "outbounds": []
+    },
+    {
+      "tag": "🏡本地代理",
+      "type": "direct",
+      "udp_fragment": true
+    },
+    {
       "tag": "📺哔哩哔哩",
       "type": "selector",
       "default": "🏡本地代理",
       "outbounds": [
         "🏡本地代理"
       ]
-    },
-    {
-      "tag": "♻️自动选择",
-      "type": "urltest",
-      "outbounds": []
-    },
-    {
-      "tag": "🚫广告拦截",
-      "type": "block"
-    },
-    {
-      "tag": "🏡本地代理",
-      "type": "direct",
-      "udp_fragment": true
     }
   ],
   "route": {
-    "auto_detect_interface": true,
-    "default_domain_resolver": "dns-proxy",
     "rules": [
       {
         "action": "sniff"
@@ -124,12 +108,9 @@
       },
       {
         "ip_is_private": true,
-        "outbound": "🏡本地代理"
-      },
-      {
-        "action": "route",
         "rule_set": [
-          "site-direct"
+          "site-direct",
+          "site-cloudflare"
         ],
         "outbound": "🏡本地代理",
         "domain_suffix": [
@@ -139,14 +120,12 @@
         ]
       },
       {
-        "action": "route",
         "rule_set": "site-bilibili",
         "outbound": "📺哔哩哔哩"
       },
       {
         "action": "reject",
-        "rule_set": "site-ads",
-        "outbound": "🚫广告拦截"
+        "rule_set": "site-ads"
       }
     ],
     "rule_set": [
@@ -175,7 +154,9 @@
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-bilibili.srs"
       }
     ],
-    "final": "🚀全球代理"
+    "final": "🚀全球代理",
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns-proxy"
   },
   "experimental": {
     "clash_api": {
