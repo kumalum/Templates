@@ -26,15 +26,15 @@
     ],
     "rules": [
       {
-        "server": "dns-direct",
+        "action": "reject",
         "rule_set": [
-          "site-direct"
+          "site-anti-ad"
         ]
       },
       {
-        "action": "reject",
+        "server": "dns-direct",
         "rule_set": [
-          "site-ads"
+          "site-direct"
         ]
       }
     ],
@@ -107,6 +107,10 @@
         "action": "hijack-dns"
       },
       {
+        "action": "reject",
+        "rule_set": "site-anti-ad"
+      },
+      {
         "ip_is_private": true,
         "rule_set": [
           "site-direct",
@@ -122,10 +126,6 @@
       {
         "rule_set": "site-bilibili",
         "outbound": "📺哔哩哔哩"
-      },
-      {
-        "action": "reject",
-        "rule_set": "site-ads"
       }
     ],
     "rule_set": [
@@ -137,9 +137,9 @@
       },
       {
         "type": "remote",
-        "tag": "site-ads",
+        "tag": "site-anti-ad",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs"
+        "url": "https://raw.githubusercontent.com/privacy-protection-tools/anti-ad.github.io/master/docs/anti-ad-sing-box.srs"
       },
       {
         "type": "remote",
