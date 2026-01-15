@@ -1,16 +1,11 @@
-// Add lines like this to spawn processes at startup.
-// 启动 niri 时同时启动的程序
-spawn-at-startup "fcitx5" // 输入法
-spawn-sh-at-startup "clipse --listen" // 剪切板守护程序
-spawn-at-startup "swww-daemon" // 壁纸守护程序
-spawn-at-startup "qs" "-c" "noctalia-shell" // 状态栏
-spawn-at-startup "rclone" "mount" "local:onedirve" "/home/kuma/remote/onedrive" "--vfs-cache-mode" "full" "--daemon"
-spawn-at-startup "rclone" "mount" "local:baidu" "/home/kuma/remote/baidu" "--vfs-cache-mode" "full" "--daemon"
+// This config is in the KDL format: https://kdl.dev
+// "/-" comments out the following node.
+// Check the wiki for a full description of the configuration:
+// https://yalter.github.io/niri/Configuration:-Introduction
 
-
-// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
-// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
-
+// Input device configuration.
+// Find the full list of options on the wiki:
+// https://yalter.github.io/niri/Configuration:-Input
 input {
     keyboard {
         xkb {
@@ -80,7 +75,7 @@ input {
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
-output "eDP-1" {
+/-output "eDP-1" {
     // Uncomment this line to disable this output.
     // off
 
@@ -90,10 +85,10 @@ output "eDP-1" {
     // for the resolution.
     // If the mode is omitted altogether or is invalid, niri will pick one automatically.
     // Run `niri msg outputs` while inside a niri instance to list all outputs and their modes.
-    mode "2736x1824@59.959"
+    mode "1920x1080@120.030"
 
     // You can use integer or fractional scale, for example use 1.5 for 150% scale.
-    scale 1.5
+    scale 2
 
     // Transform allows to rotate the output counter-clockwise, valid values are:
     // normal, 90, 180, 270, flipped, flipped-90, flipped-180 and flipped-270.
@@ -108,8 +103,7 @@ output "eDP-1" {
     // so to put another output directly adjacent to it on the right, set its x to 1920.
     // If the position is unset or results in an overlap, the output is instead placed
     // automatically.
-    position x=0 y=0
-    focus-at-startup
+    position x=1280 y=0
 }
 
 // Settings that influence how windows are positioned and sized.
@@ -118,7 +112,7 @@ output "eDP-1" {
 layout {
     // Set gaps around windows in logical pixels.
     gaps 16
-    background-color "transparent"
+
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
     //   or right edge of the screen.
@@ -165,7 +159,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 1
+        width 4
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -267,19 +261,30 @@ layout {
         // bottom 64
     }
 }
-hotkey-overlay {
-	// 开机时隐藏热键提示
-	skip-at-startup
 
+// Add lines like this to spawn processes at startup.
+// Note that running niri as a session supports xdg-desktop-autostart,
+// which may be more convenient to use.
+// See the binds section below for more spawn examples.
+
+// This line starts waybar, a commonly used bar for Wayland compositors.
+spawn-at-startup "waybar"
+
+// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+
+hotkey-overlay {
+    // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+    // skip-at-startup
 }
 
-// 取消标题栏显示
-prefer-no-csd
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
+// prefer-no-csd
+
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
 // The path is formatted with strftime(3) to give you the screenshot date and time.
@@ -305,7 +310,6 @@ animations {
 
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
-// 使用 niri msg pick-window 查看窗口属性  
 window-rule {
     // This regular expression is intentionally made as specific as possible,
     // since this is the default config, and we want no false positives.
@@ -314,31 +318,14 @@ window-rule {
     default-column-width {}
 }
 
+// Open the Firefox picture-in-picture player as floating by default.
 window-rule {
-    // fire-fox 打开式时最大化窗口
-    match app-id="firefox"
-    open-maximized true
-}
-
-// 使以下窗口，以浮动模式打开
-// super + 右键调整窗口大小
-// super + 左键调整窗口位置
-window-rule {
-    match app-id="waypaper"
-    match app-id="imv"
-    match app-id="localsend"
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }
-
-
-window-rule {
-    match title="剪切板"
-    default-column-width { fixed 680; }
-    default-window-height { fixed 720; }
-    open-floating true
-}
-
-
 
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
@@ -354,41 +341,30 @@ window-rule {
 
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
-window-rule {
+/-window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
-    opacity 0.99
-    draw-border-with-background false
 }
 
-// 固定背景
-layer-rule {
-    match namespace="swww-daemon"
-    place-within-backdrop true
-}
-
-// 在概览中禁用窗口阴影
-overview {
-    workspace-shadow {
-        off
-    }
-}
-
-// 绑定按键
 binds {
-    // 打开文件管理器
-    Mod+E { spawn "kitty" "yazi";}    
-    // 锁屏
-    Mod+L  { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; } 
-    // 随机壁纸
-	Mod+Alt+W {spawn-sh "waypaper --random";} 
-	Mod+V {spawn "kitty" "-T" "剪切板" "clipse";}
-	// 运行模拟终端
-    Mod+T { spawn "kitty"; }
-    // 打开程序启动器
-	Mod+D { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
-	// 打开 firefox 浏览器
-	Mod+B {spawn "firefox";}
+    // Keys consist of modifiers separated by + signs, followed by an XKB key name
+    // in the end. To find an XKB name for a particular key, you may use a program
+    // like wev.
+    //
+    // "Mod" is a special modifier equal to Super when running on a TTY, and to Alt
+    // when running as a winit window.
+    //
+    // Most actions that you can bind here can also be invoked programmatically with
+    // `niri msg action do-something`.
+
+    // Mod-Shift-/, which is usually the same as Mod-?,
+    // shows a list of important hotkeys.
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // Suggested binds for running programs: terminal, app launcher, screen locker.
+    Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+    Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -420,7 +396,7 @@ binds {
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
-    F5 repeat=false { toggle-overview; }
+    Mod+O repeat=false { toggle-overview; }
 
     Mod+Q repeat=false { close-window; }
 
@@ -428,10 +404,10 @@ binds {
     Mod+Down  { focus-window-down; }
     Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
-    //Mod+H     { focus-column-left; }
-    //Mod+J     { focus-window-down; }
-    //Mod+K     { focus-window-up; }
-    //Mod+L     { focus-column-right; }
+    Mod+H     { focus-column-left; }
+    Mod+J     { focus-window-down; }
+    Mod+K     { focus-window-up; }
+    Mod+L     { focus-column-right; }
 
     Mod+Ctrl+Left  { move-column-left; }
     Mod+Ctrl+Down  { move-window-down; }
@@ -582,6 +558,12 @@ binds {
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
 
+    // While maximize-column leaves gaps and borders around the window,
+    // maximize-window-to-edges doesn't: the window expands to the edges of the screen.
+    // This bind corresponds to normal window maximizing,
+    // e.g. by double-clicking on the titlebar.
+    Mod+M { maximize-window-to-edges; }
+
     // Expand the focused column to space not taken up by other fully visible columns.
     // Makes the column "fill the rest of the space".
     Mod+Ctrl+F { expand-column-to-available-width; }
@@ -607,7 +589,7 @@ binds {
     Mod+Shift+Equal { set-window-height "+10%"; }
 
     // Move the focused window between the floating and the tiling layout.
-    Mod+Ctrl+V       { toggle-window-floating; }
+    Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
@@ -645,4 +627,3 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 }
-include "./noctalia.kdl"
