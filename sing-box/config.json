@@ -114,13 +114,15 @@
         "ip_is_private": true,
         "rule_set": [
           "site-direct",
-          "site-cloudflare"
+          "site-cloudflare",
+          "site-onedrive"
         ],
         "outbound": "🏡本地代理",
         "domain_suffix": [
           "1210923.xyz",
           "kumanine.dpdns.org",
-          "kuma9.dpdns.org"
+          "kuma9.dpdns.org",
+          "pages.dev"
         ]
       },
       {
@@ -152,6 +154,12 @@
         "tag": "site-bilibili",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-bilibili.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "site-onedrive",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-onedrive.srs"
       }
     ],
     "final": "🚀全球代理",
