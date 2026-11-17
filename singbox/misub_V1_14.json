@@ -1,0 +1,232 @@
+{
+  "log": {
+    "level": "warn"
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns-resolver",
+        "type": "udp",
+        "server": "223.5.5.5"
+      },
+      {
+        "tag": "dns-direct",
+        "type": "https",
+        "server": "dns.alidns.com",
+        "domain_resolver": "dns-resolver",
+        "detour": "☘️ 本地网络"
+      },
+      {
+        "tag": "dns-proxy",
+        "type": "https",
+        "server": "dns.sse.cisco.com",
+        "domain_resolver": "dns-resolver",
+        "detour": "Proxy 🚀"
+      },
+      {
+        "tag": "dns-fakeip",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "2001:2::/48"
+      }
+    ],
+    "rules": [
+      {
+        "action": "reject",
+        "rule_set": "site-anti-ad"
+      },
+      {
+        "server": "dns-direct",
+        "rule_set": [
+          "site-China",
+          "local@China",
+          "site-steam@cn"
+        ]
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "dns-fakeip"
+      }
+    ],
+    "final": "dns-direct",
+    "strategy": "ipv4_only",
+    "cache_capacity": 4096,
+    "reverse_mapping": true
+  },
+  "http_clients": [
+    {
+      "tag": "proxy-client",
+      "detour": "Proxy 🚀"
+    }
+  ],
+  "inbounds": [
+    {
+      "address": [
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "route_address": [
+        "0.0.0.0/1",
+        "128.0.0.0/1",
+        "::/1",
+        "8000::/1"
+      ],
+      "route_exclude_address": [
+        "10.0.0.0/8",
+        "172.16.0.0/12",
+        "192.168.0.0/16",
+        "169.254.0.0/16",
+        "fc00::/7",
+        "fe80::/10"
+      ],
+      "auto_route": true,
+      "strict_route": true,
+      "auto_redirect": false,
+      "type": "tun",
+      "stack": "mixed"
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "Proxy 🚀",
+      "outbounds": [
+        "Auto ♻️",
+        <%regionGroupNames%>,
+        "Direct ☘️"
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "Auto ♻️",
+      "outbounds": [
+        <%proxyNames%>
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "3m"
+    },
+    <%regionGroups%>,
+    <%proxies%>,
+    {
+      "tag": "Direct ☘️",
+      "type": "direct",
+      "udp_fragment": true
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "action": "sniff",
+        "timeout": "800ms"
+      },
+      {
+        "protocol": "dns",
+        "action": "hijack-dns"
+      },
+      {
+        "network": "udp",
+        "port": 443,
+        "action": "reject"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "Direct ☘️"
+      },
+      {
+        "rule_set": [
+          "site-anti-ad"
+        ],
+        "action": "reject"
+      },
+      {
+        "action": "bypass",
+        "rule_set": [
+          "local@bypass"
+        ]
+      },
+      {
+        "action": "resolve",
+        "server": "dns-direct",
+        "rule_set": [
+          "site-China",
+          "local@China",
+          "site-steam@cn"
+        ]
+      },
+      {
+        "rule_set": [
+          "site-China",
+          "local@China",
+          "site-steam@cn"
+        ],
+        "outbound": "Direct ☘️"
+      },
+      {
+        "rule_set": [
+          "local@proxy"
+        ],
+        "outbound": "Proxy 🚀"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "local",
+        "tag": "local@bypass",
+        "format": "source",
+        "path": "rules/Bypass.rules.json"
+      },
+      {
+        "type": "local",
+        "tag": "local@China",
+        "format": "source",
+        "path": "rules/China.rules.json"
+      },
+      {
+        "type": "local",
+        "tag": "local@proxy",
+        "format": "source",
+        "path": "rules/Proxy.rules.json"
+      },
+      {
+        "type": "remote",
+        "tag": "site-anti-ad",
+        "format": "binary",
+        "http_client": "proxy-client",
+        "url": "https://raw.githubusercontent.com/privacy-protection-tools/anti-ad.github.io/master/docs/anti-ad-sing-box.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "site-China",
+        "format": "binary",
+        "http_client": "proxy-client",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
+      },
+      {
+        "type": "remote",
+        "tag": "site-steam@cn",
+        "format": "binary",
+        "http_client": "proxy-client",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-steam@cn.srs"
+      }
+    ],
+    "final": "Proxy 🚀",
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns-proxy"
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "0.0.0.0:9090",
+      "external_ui": "zashboard",
+      "external_ui_download_url": "https://github.com/Zephyruso/zashboard/releases/latest/download/dist-no-fonts.zip",
+      "external_ui_download_detour": "proxy-client"
+    },
+    "cache_file": {
+      "enabled": true,
+      "store_dns": true,
+      "rdrc_timeout": "3d"
+    }
+  }
+}
