@@ -1,6 +1,9 @@
 {
   "log": {
-    "level": "warn"
+    "disabled": false,
+    "level": "warn",
+    "output": "singbox.log",
+    "timestamp": true
   },
   "dns": {
     "servers": [
@@ -14,7 +17,7 @@
         "type": "https",
         "server": "dns.alidns.com",
         "domain_resolver": "dns-resolver",
-        "detour": "☘️ 本地网络"
+        "detour": "Direct ☘️"
       },
       {
         "tag": "dns-proxy",
@@ -110,7 +113,7 @@
         {
           "action": "include",
           "keywords": [
-            "🇬🇧|英国|uk|gb"
+            "🇬🇧|英国|uk|gb|UK|GB"
           ]
         }
       ],
@@ -127,7 +130,7 @@
         {
           "action": "include",
           "keywords": [
-            "新加坡|🇸🇬|sg"
+            "新加坡|🇸🇬|sg|SG"
           ]
         }
       ],
@@ -144,7 +147,7 @@
         {
           "action": "include",
           "keywords": [
-            "香港|🇭🇰|hk"
+            "香港|🇭🇰|hk|HK"
           ]
         }
       ],
@@ -161,7 +164,7 @@
         {
           "action": "include",
           "keywords": [
-            "usa|🇺🇸|美国"
+            "usa|🇺🇸|美国|USA"
           ]
         }
       ],
