@@ -94,22 +94,72 @@
       "type": "selector",
       "tag": "Proxy 🚀",
       "outbounds": [
-        "Auto ♻️",
-        <%regionGroupNames%>,
-        "Direct ☘️"
+        "🇭🇰 Hong Kong",
+        "🇺🇸 The United States of America",
+        "🇬🇧 United Kingdom",
+        "🇸🇬 Singapore"
       ]
     },
     {
       "type": "urltest",
-      "tag": "Auto ♻️",
-      "outbounds": [
-        <%proxyNames%>
+      "tag": "🇬🇧 United Kingdom",
+      "outbounds": [],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "🇬🇧|英国|uk|gb"
+          ]
+        }
       ],
       "url": "http://www.gstatic.com/generate_204",
       "interval": "3m"
     },
-    <%regionGroups%>,
-    <%proxies%>,
+    {
+      "type": "urltest",
+      "tag": "🇸🇬 Singapore",
+      "outbounds": [],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "新加坡|🇸🇬|sg"
+          ]
+        }
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "3m"
+    },
+    {
+      "type": "urltest",
+      "tag": "🇭🇰 Hong Kong",
+      "outbounds": [],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "香港|🇭🇰|hk"
+          ]
+        }
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "3m"
+    },
+    {
+      "type": "urltest",
+      "tag": "🇺🇸 The United States of America",
+      "outbounds": [],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "usa|🇺🇸|美国"
+          ]
+        }
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "3m"
+    },
     {
       "tag": "Direct ☘️",
       "type": "direct",
