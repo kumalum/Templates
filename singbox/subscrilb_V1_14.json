@@ -103,7 +103,9 @@
     {
       "type": "urltest",
       "tag": "🇬🇧 United Kingdom",
-      "outbounds": [],
+      "outbounds": [
+        "{all}"
+      ],
       "filter": [
         {
           "action": "include",
@@ -118,7 +120,9 @@
     {
       "type": "urltest",
       "tag": "🇸🇬 Singapore",
-      "outbounds": [],
+      "outbounds": [
+        "{all}"
+      ],
       "filter": [
         {
           "action": "include",
@@ -133,7 +137,9 @@
     {
       "type": "urltest",
       "tag": "🇭🇰 Hong Kong",
-      "outbounds": [],
+      "outbounds": [
+        "{all}"
+      ],
       "filter": [
         {
           "action": "include",
@@ -148,7 +154,9 @@
     {
       "type": "urltest",
       "tag": "🇺🇸 The United States of America",
-      "outbounds": [],
+      "outbounds": [
+        "{all}"
+      ],
       "filter": [
         {
           "action": "include",
