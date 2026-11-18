@@ -100,7 +100,23 @@
         "🇭🇰 Hong Kong",
         "🇺🇸 The United States of America",
         "🇬🇧 United Kingdom",
-        "🇸🇬 Singapore"
+        "🇸🇬 Singapore",
+        "⬇️ Download"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "⬇️ Download",
+      "outbounds": [
+        "{all}"
+      ],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "xttp|nine99"
+          ]
+        }
       ]
     },
     {
@@ -110,6 +126,12 @@
         "{all}"
       ],
       "filter": [
+        {
+          "action": "exclude",
+          "keywords": [
+            "xttp|nine99"
+          ]
+        },
         {
           "action": "include",
           "keywords": [
@@ -128,6 +150,12 @@
       ],
       "filter": [
         {
+          "action": "exclude",
+          "keywords": [
+            "xttp|nine99"
+          ]
+        },
+        {
           "action": "include",
           "keywords": [
             "新加坡|🇸🇬|sg|SG"
@@ -145,6 +173,12 @@
       ],
       "filter": [
         {
+          "action": "exclude",
+          "keywords": [
+            "xttp|nine99"
+          ]
+        },
+        {
           "action": "include",
           "keywords": [
             "香港|🇭🇰|hk|HK"
@@ -161,6 +195,12 @@
         "{all}"
       ],
       "filter": [
+        {
+          "action": "exclude",
+          "keywords": [
+            "xttp|nine99"
+          ]
+        },
         {
           "action": "include",
           "keywords": [
